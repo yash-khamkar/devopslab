@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Source Code Retrieval') {
+            steps {
+                echo 'Source code retrieved from GitHub'
+            }
+        }
+
+        stage('Java Compilation') {
+            steps {
+                bat 'if not exist target\\classes mkdir target\\classes'
+                bat 'javac -d target\\classes src\\main\\java\\*.java'
+            }
+        }
+
+        stage('Application Execution') {
+            steps {
+                bat 'java -cp target\\classes Main'
+            }
+        }
+
+        stage('Build Verification') {
+            steps {
+                echo 'Employee Management build verified!'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'BUILD SUCCESSFUL'
+        }
+
+        failure {
+            echo 'BUILD FAILED'
+        }
+    }
+}
